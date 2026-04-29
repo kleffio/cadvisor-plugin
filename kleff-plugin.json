@@ -1,0 +1,30 @@
+{
+  "id": "cadvisor-source",
+  "name": "cAdvisor",
+  "type": "observability",
+  "tier": 1,
+  "description": "Exports per-container resource usage metrics (CPU, memory, network, disk) for Prometheus scraping.",
+  "longDescription": "Runs Google cAdvisor alongside the Docker daemon to collect per-container CPU, memory, network, and filesystem metrics. Exposes them in Prometheus text format. Automatically discovered as a scrape target by the platform HTTP SD endpoint.",
+  "tags": ["observability", "metrics", "prometheus", "containers", "docker"],
+  "capabilities": ["monitoring.source"],
+  "author": "Kleff",
+  "repo": "https://github.com/google/cadvisor",
+  "image": "gcr.io/cadvisor/cadvisor",
+  "version": "v0.49.1",
+  "license": "Apache-2.0",
+  "verified": true,
+  "privileged": true,
+  "scrape": {
+    "port": 8080,
+    "path": "/metrics",
+    "scheme": "http"
+  },
+  "volumes": [
+    { "hostPath": "/", "target": "/rootfs", "readOnly": true },
+    { "hostPath": "/var/run", "target": "/var/run", "readOnly": true },
+    { "hostPath": "/sys", "target": "/sys", "readOnly": true },
+    { "hostPath": "/var/lib/docker", "target": "/var/lib/docker", "readOnly": true },
+    { "hostPath": "/dev/disk", "target": "/dev/disk", "readOnly": true }
+  ],
+  "config": []
+}
